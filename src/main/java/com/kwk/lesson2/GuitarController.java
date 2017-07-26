@@ -7,9 +7,13 @@ package com.kwk.lesson2;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,31 +24,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GuitarController {
     
-    private List<Guitar> guitar = new ArrayList<>();
-    
-    public GuitarController(){
-        
-        this.guitar.add( new Guitar(1, "Gibson", "Les Paul"));
-        this.guitar.add( new Guitar(2, "Epiphone", "Les Paul"));
-        this.guitar.add( new Guitar(3, "Ibanez", "Ibanez"));
-        
-    }
+    @Autowired
+    private RepositaryGuitar repositary;
     
     @GetMapping("/api/guitars")
+    @ResponseBody
     public ResponseEntity<?> getGuitars(){
-        return ResponseEntity.ok(this.guitar);
+        return ResponseEntity.ok(this.repositary.getAll());
     }
     
     @GetMapping("/api/guitars/{id}")
     public ResponseEntity<?> getOne(@PathVariable int id){
-        for (Guitar guitars: this.guitar){
-            if (guitars.getId() == id ){
-                return ResponseEntity.ok(guitars);
-            }
+        
+        try{
+            return ResponseEntity.ok(this.repositary.getOne(id));
+        } catch (NullPointerException ex){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
-   
+    
+    @PostMapping("/api/guitars")
+    public ResponseEntity<?> addOne(@RequestBody Guitar guitar){
+        try{
+            this.repositary.addOne(guitar);
+            return ResponseEntity.accepted().body(guitar);
+        } catch (IllegalArgumentException ex){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    @DeleteMapping("/api/guitars/{id}")
+    public ResponseEntity<?> deleteOne(@PathVariable int id){
+        
+        try{
+            this.repositary.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (NullPointerException ex) {
+            return ResponseEntity.notFound().build();
+        }
+        
+    }
  
 }
 
