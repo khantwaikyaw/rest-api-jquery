@@ -48,6 +48,12 @@ public class RepositaryGuitar {
         throw new NullPointerException("Not Exit");
     }
     
+    public void updateOne(int id, Guitar gt){
+        Guitar guitar = this.getOne(id);
+        guitar.setBrand(gt.getBrand());
+        guitar.setType(gt.getType());
+    }
+    
     public void delete(int id){
         Guitar guitar = this.getOne(id);
         this.guitar.remove(guitar);

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +51,17 @@ public class GuitarController {
             this.repositary.addOne(guitar);
             return ResponseEntity.accepted().body(guitar);
         } catch (IllegalArgumentException ex){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    @RequestMapping (value = "/api/guitars/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Guitar gt){
+        try{
+            this.repositary.updateOne(id, gt);
+            return ResponseEntity.accepted().body(gt);
+            
+        } catch (NullPointerException ex){
             return ResponseEntity.badRequest().build();
         }
     }

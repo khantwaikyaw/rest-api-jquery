@@ -27,15 +27,60 @@ $(function () {
                                 .attr('data-target', '.bs-student-modal')
                             .append($('<span />').addClass('glyphicon glyphicon-eye-open'))
                         )
+                        .append(
+                            $('<button />')
+                                .addClass('btn btn-xs btn-danger btn-delete')
+                                .data('id',guitar.id)
+                                .html('X')
+                          
+                        )
+                        .append(
+                            $('<button />')
+                                .addClass('btn btn-xs btn-info btn-update')
+                                .data('id',guitar.id)
+                                .text('update')
+                                .attr('data-toggle', 'modal')
+                                .attr('data-target', '.bs-update-modal')
+                        )
                     )
             );
+        });
+        
+        //Delete function
+        $('.btn-delete').click (function () {
+//            alert($(this).data('id'));
+            var delId = $(this).data('id');
+            
+            $.ajax({
+               url:"/api/guitars/"+delId,
+               type:"delete",
+               contentType:"application/json; charset=utf-8",
+               success:function(){
+                  
+                       alert("Success");
+                   
+               }
+            });
         });
 
         // Student details button click event handler.
         $('.btn-student').click (function () {
             console.debug($(this).data('id'));
         });
-
+        
+         // Bootstrap modal pop up event (on event) handler.
+        $('.bs-update-modal').on('show.bs.modal', function (e) {
+            var triggerButton = $(e.relatedTarget);
+            var id = triggerButton.data('id');
+            $.get('/api/guitars/' + id, function (data) {
+                console.debug(data);
+                $('#gt-id').val(data.id);
+                $('#gt-brand').val(data.brand);
+                $('#gt-type').val(data.type);
+      
+            });
+        });
+        
         // Bootstrap modal pop up event (on event) handler.
         $('.bs-student-modal').on('show.bs.modal', function (e) {
             var triggerButton = $(e.relatedTarget);
@@ -48,13 +93,36 @@ $(function () {
       
             });
         });
-//
+        
+        //Update
+        $('#btn-update').click(function(){
+//            
+      
+            var gt = {};
+            gt.brand = $('#gt-brand').val();
+            gt.type = $('#gt-type').val();
+            console.log(gt);
+            $.ajax({
+                url:"/api/guitars/"+$('#gt-id').val(),
+                type:"put",
+                data: JSON.stringify(gt),
+               contentType:"application/json; charset=utf-8",
+               dataType:"JSON",
+               success:function(result){
+                   if(result){
+                       alert("Success");
+                   }
+               }
+            });
+         });
+//      
         // ADD New
        $('#btn-Add').click(function(){
            var guitar = {};
            guitar.id = parseInt($('#id').val());
            guitar.brand = $('#brand').val();
            guitar.type = $('#type').val();
+           
            
            $.ajax({
                url:"/api/guitars",
