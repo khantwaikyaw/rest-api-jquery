@@ -5,17 +5,35 @@
  */
 package com.kwk.lesson2;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author Aung Thu Moe
  */
-public class Guitar {
+
+@Entity
+@Table(name = "guitar")
+public class Guitar implements Serializable{
+
+    private static final long serialVersionUID = -1118120524327897134L;
     
+    @Id
+    @Column(name="id", nullable = false)
     private int id;
+    
+    @Column(name="brand")
     private String brand;
+    
+    @Column(name="type")
     private String type;
     
     public Guitar(){
+        
     }
     
     public Guitar(int id, String brand, String type){
