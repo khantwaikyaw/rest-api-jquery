@@ -1,6 +1,6 @@
 spring:
     datasource:
-        url: jdbc:h2:men:emr;MODE=mysql;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:kwk;MODE=mysql;DB_CLOSE_DELAY=-1
         username: root
         password: root
     h2:
