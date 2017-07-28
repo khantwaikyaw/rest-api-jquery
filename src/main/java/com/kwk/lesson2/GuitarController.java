@@ -5,8 +5,6 @@
  */
 package com.kwk.lesson2;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,57 +23,57 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class GuitarController {
-    
     @Autowired
-    private RepositaryGuitar repositary;
+    private GuitarService service;
     
     @GetMapping("/api/guitars")
     @ResponseBody
     public ResponseEntity<?> getGuitars(){
-        return ResponseEntity.ok(this.repositary.getAll());
+        return ResponseEntity.ok(this.service.findAll());
     }
     
     @GetMapping("/api/guitars/{id}")
-    public ResponseEntity<?> getOne(@PathVariable int id){
-        
-        try{
-            return ResponseEntity.ok(this.repositary.getOne(id));
-        } catch (NullPointerException ex){
+    public ResponseEntity<?> getOne(@PathVariable Long id){
+        Guitar guitar = this.service.findOne(id);
+        System.out.println("Guitar: " + guitar.toString());
+        if (guitar == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(guitar);
     }
     
     @PostMapping("/api/guitars")
     public ResponseEntity<?> addOne(@RequestBody Guitar guitar){
         try{
-            this.repositary.addOne(guitar);
+            this.service.create(guitar);
             return ResponseEntity.accepted().body(guitar);
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().build();
         }
     }
-    
-    @RequestMapping (value = "/api/guitars/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Guitar gt){
-        try{
-            this.repositary.updateOne(id, gt);
-            return ResponseEntity.accepted().body(gt);
-            
-        } catch (NullPointerException ex){
-            return ResponseEntity.badRequest().build();
-        }
-    }
+//    
+//    @RequestMapping (value = "/api/guitars/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
+//    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Guitar gt){
+//        try{
+//            System.out.println(gt.getBrand());
+//            Guitar guitar = this.repositary.getOne(id);
+//            guitar.setBrand(gt.getBrand());
+//            guitar.setType(gt.getType());
+//            this.repositary.save(guitar);
+//            return ResponseEntity.accepted().body(gt);
+//        } catch (NullPointerException ex){
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
     
     @DeleteMapping("/api/guitars/{id}")
-    public ResponseEntity<?> deleteOne(@PathVariable int id){
-        
+    public ResponseEntity<?> deleteOne(@PathVariable Long id){
         try{
-            this.repositary.delete(id);
+            this.service.delete(id);
             return ResponseEntity.noContent().build();
         } catch (NullPointerException ex) {
             return ResponseEntity.notFound().build();
         }
-        
     }
  
 }

@@ -5,10 +5,8 @@
  */
 package com.kwk.lesson2;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -18,13 +16,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "guitar")
-public class Guitar implements Serializable{
+public class Guitar extends MutableModel {
 
     private static final long serialVersionUID = -1118120524327897134L;
-    
-    @Id
-    @Column(name="id", nullable = false)
-    private int id;
     
     @Column(name="brand")
     private String brand;
@@ -33,21 +27,7 @@ public class Guitar implements Serializable{
     private String type;
     
     public Guitar(){
-        
-    }
-    
-    public Guitar(int id, String brand, String type){
-        this.id = id;
-        this.brand = brand;
-        this.type = type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        super();
     }
 
     public String getBrand() {
@@ -65,7 +45,4 @@ public class Guitar implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-    
-    
-    
 }

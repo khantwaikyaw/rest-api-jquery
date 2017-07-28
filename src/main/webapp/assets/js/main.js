@@ -96,12 +96,10 @@ $(function () {
         
         //Update
         $('#btn-update').click(function(){
-//            
-      
             var gt = {};
             gt.brand = $('#gt-brand').val();
             gt.type = $('#gt-type').val();
-            console.log(gt);
+            console.log($('#gt-id').val());
             $.ajax({
                 url:"/api/guitars/"+$('#gt-id').val(),
                 type:"put",
