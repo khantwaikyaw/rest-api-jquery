@@ -12,6 +12,7 @@ import javax.persistence.Table;
 /**
  *
  * @author Aung Thu Moe
+ * @author Khant Wai Kyaw
  */
 
 @Entity
