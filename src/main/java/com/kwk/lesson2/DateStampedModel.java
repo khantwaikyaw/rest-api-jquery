@@ -7,6 +7,7 @@ package com.kwk.lesson2;
 
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,7 @@ import org.springframework.data.annotation.CreatedDate;
  *
  * @author Aung Thu Moe
  */
+@MappedSuperclass
 public abstract class DateStampedModel extends Model {
     
     private static final long serialVersionUID = 5752925653889009095L;

@@ -10,8 +10,10 @@ spring:
         console:
             enable: false
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        database: H2
+#        database-platform: org.hibernate.dialect.H2Dialect
+#        database: H2
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: mysql
         show-sql: true
         hibernate:
             ddl-auto: create-drop

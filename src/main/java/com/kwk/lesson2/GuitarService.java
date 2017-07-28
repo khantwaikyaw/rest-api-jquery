@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author Aung Thu Moe
  */
 @Service
-public class GuitarService extends ImmutableService<Guitar> {
+public class GuitarService extends MutableService<Guitar> {
 
     public GuitarService(JpaRepository<Guitar, Long> repository) {
         super(repository);

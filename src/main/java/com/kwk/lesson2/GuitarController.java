@@ -52,19 +52,19 @@ public class GuitarController {
         }
     }
 //    
-//    @RequestMapping (value = "/api/guitars/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
-//    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Guitar gt){
-//        try{
-//            System.out.println(gt.getBrand());
-//            Guitar guitar = this.repositary.getOne(id);
-//            guitar.setBrand(gt.getBrand());
-//            guitar.setType(gt.getType());
-//            this.repositary.save(guitar);
-//            return ResponseEntity.accepted().body(gt);
-//        } catch (NullPointerException ex){
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
+    @RequestMapping (value = "/api/guitars/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Guitar gt){
+        try{
+            System.out.println(gt.getBrand());
+            Guitar guitar = this.service.findOne(id);
+            guitar.setBrand(gt.getBrand());
+            guitar.setType(gt.getType());
+            this.service.update(guitar);
+            return ResponseEntity.accepted().body(gt);
+        } catch (NullPointerException ex){
+            return ResponseEntity.badRequest().build();
+        }
+    }
     
     @DeleteMapping("/api/guitars/{id}")
     public ResponseEntity<?> deleteOne(@PathVariable Long id){
